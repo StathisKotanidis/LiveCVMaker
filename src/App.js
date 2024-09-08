@@ -5,6 +5,13 @@ export default function App() {
     fullName: "",
     jobTitle: "",
     summary: "",
+    techCorp: "",
+    workDuration: "",
+    phoneNumber: "",
+    portfolio: "",
+    github: "",
+    linkedln: "",
+    twitter: "",
   });
 
   const handleData = (e) => {
@@ -24,6 +31,12 @@ export default function App() {
 }
 
 function Form({ formData, handleData }) {
+  const [workExperience, setWorkExperience] = useState(false);
+
+  function handleExperienceBtn() {
+    setWorkExperience(true);
+  }
+
   return (
     <div className="info">
       <section className="form title-info">
@@ -56,6 +69,67 @@ function Form({ formData, handleData }) {
 
       <section className="form work-experience-info">
         <h2>Work Experience</h2>
+        {workExperience && (
+          <div className="work-experience-container">
+            <input
+              type="text"
+              placeholder="Tech Corp"
+              name="techCorp"
+              onChange={handleData}
+              value={formData.techCorp}
+            ></input>
+            <input
+              type="text"
+              placeholder="Duration"
+              name="workDuration"
+              onChange={handleData}
+              value={formData.workDuration}
+            ></input>
+            <ul></ul>
+          </div>
+        )}
+        <button id="experience-btn" onClick={handleExperienceBtn}>
+          Add Experience
+        </button>
+      </section>
+
+      <section className="form contact-info">
+        <h2>Contact</h2>
+        <input
+          type="text"
+          placeholder="Phone number"
+          onChange={handleData}
+          name="phoneNumber"
+          value={formData.phoneNumber}
+        ></input>
+        <input
+          type="text"
+          placeholder="Portfolio"
+          onChange={handleData}
+          name="portfolio"
+          value={formData.portfolio}
+        ></input>
+        <input
+          type="text"
+          placeholder="Github"
+          onChange={handleData}
+          name="github"
+          value={formData.github}
+        ></input>
+        <input
+          type="text"
+          placeholder="Linkedln"
+          onChange={handleData}
+          name="linkedln"
+          value={formData.linkedln}
+        ></input>
+        <input
+          type="text"
+          placeholder="Twitter"
+          onChange={handleData}
+          name="twitter"
+          value={formData.twitter}
+        ></input>
       </section>
     </div>
   );
@@ -76,50 +150,56 @@ function Cv({ formData }) {
           <p>{formData.summary}</p>
         </section>
 
-        <section>
+        <section className="work-experience">
           <h2>WORK EXPERIENCE</h2>
-          <span>Software Engineer at 100devs, Los Angeles, CA</span>
-          <span id="duration">January 2019- Present</span>
+          <span>{formData.techCorp}</span>
+          <span id="duration">{formData.workDuration}</span>
+          <ul></ul>
+          <h3>Recent Projects</h3>
+        </section>
+
+        <section className="volunteering">
+          <h2>VOLUNTEERING</h2>
+        </section>
+
+        <section className="contact">
+          <h2>CONTACT</h2>
           <ul>
-            <li>
-              Collaborated with a team of developers to build modern and
-              responsive web applications using best practices
+            <li>{formData.phoneNumber}</li>
+            <li className="web-presence" id="portfolio">
+              {formData.portfolio}
             </li>
-            <li>Built semantically structured full stack web applications</li>
-            <li>
-              Applied agile methodologies like SCRUM for project management
+            <li className="web-presence" id="github">
+              {formData.github}
+            </li>
+            <li className="web-presence" id="linkedin">
+              {formData.linkedln}
+            </li>
+            <li className="web-presence" id="twitter">
+              {formData.twitter}
             </li>
           </ul>
+        </section>
 
-          <h3>Recent Projects</h3>
-          <p>
-            Hip Coffee Co (Fullstack Web App) – Cashier can take coffee orders
-            from customers with their names. Baristas can login to the app and
-            see orders that have been made, mark them as complete. Orders that
-            have been completed will note which barista completed the order.
-          </p>
-          <p>
-            Happy Notes (Fullstack Web App) – Users can login to their profile
-            and find their list of notes. They can add new notes through an
-            input, which they can then edit or delete all notes in their
-            profile.
-          </p>
-          <p>100Hours Project –</p>
-          <p>
-            Other Projects: Small Lakes Casino Virtual Slot Machine, Los Angeles
-            StarGazers Society APOD Web App with NASA API integration, On-demand
-            background color changer for Partnered Twitch streamer, and many
-            more
-          </p>
+        <section className="skills">
+          <h2>SKILLS</h2>
+          <ul>
+            <li>HTML</li>
+            <li>Javascript</li>
+            <li>CSS</li>
+            <li>React</li>
+            <li>MongoDB</li>
+            <li>OOP</li>
+            <li>Node.js</li>
+            <li>Web Accessibility</li>
+          </ul>
+        </section>
 
-          <span>Full Stack Web Developer at Bob's Consulting | Boston, MA</span>
-          <span id="duration">January 2018- December 2019</span>
-          <p>
-            Created full stack web applications and static websites for
-            different clients across small and medium size businesses. Also,
-            consulted on SEO and social media strategy. Some clients included:
-          </p>
-          <span>Actual Client -</span>
+        <section className="education">
+          <h2>EDUCATION</h2>
+          <span>Univerisy Of Ioannina</span>
+          <span> 2014-2024</span>
+          <span>Computer Science and Engineering</span>
         </section>
       </div>
     </div>
