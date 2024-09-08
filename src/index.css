@@ -58,6 +58,8 @@ ul {
   height: 945px;
   margin: 0 0.3rem;
   margin-top: 3.5rem;
+  overflow-y: scroll; /* Enable vertical scrolling */
+  overflow-x: hidden; /* Prevent horizontal scrolling if not needed */
 }
 
 .cv-container {
@@ -181,9 +183,11 @@ ul {
   gap: 1rem;
 }
 
-.summary-info textarea {
-  padding: 40px;
+.summary-info textarea,
+.skills-info textarea {
+  height: 100px;
   resize: none;
+  padding: 15px;
 }
 
 #experience-btn {

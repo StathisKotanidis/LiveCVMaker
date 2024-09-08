@@ -12,7 +12,26 @@ export default function App() {
     github: "",
     linkedln: "",
     twitter: "",
+    university: "",
+    major: "",
+    startDate: 0,
+    endDate: 0,
   });
+
+  const [skills, setSkills] = useState([]);
+  const [currentSkill, setCurrentSkill] = useState("");
+
+  const handleTextareaChange = (e) => {
+    setCurrentSkill(e.target.value);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && currentSkill.trim() !== "") {
+      e.preventDefault();
+      setSkills([...skills, currentSkill]);
+      setCurrentSkill("");
+    }
+  };
 
   const handleData = (e) => {
     const { name, value } = e.target; // Destructure name and value from event target
@@ -24,13 +43,25 @@ export default function App() {
 
   return (
     <div className="ui-container">
-      <Form formData={formData} handleData={handleData} />
-      <Cv formData={formData} />
+      <Form
+        formData={formData}
+        handleData={handleData}
+        currentSkill={currentSkill}
+        handleKeyDown={handleKeyDown}
+        handleTextareaChange={handleTextareaChange}
+      />
+      <Cv formData={formData} skills={skills} />
     </div>
   );
 }
 
-function Form({ formData, handleData }) {
+function Form({
+  formData,
+  handleData,
+  currentSkill,
+  handleTextareaChange,
+  handleKeyDown,
+}) {
   const [workExperience, setWorkExperience] = useState(false);
 
   function handleExperienceBtn() {
@@ -50,7 +81,7 @@ function Form({ formData, handleData }) {
         ></input>
         <input
           type="text"
-          placeholder="job title you applying for "
+          placeholder="Job title"
           name="jobTitle"
           onChange={handleData}
           value={formData.jobTitle}
@@ -131,11 +162,29 @@ function Form({ formData, handleData }) {
           value={formData.twitter}
         ></input>
       </section>
+
+      <section className="form skills-info">
+        <h2>Skills</h2>
+        <textarea
+          placeholder="Type a skill and hit enter"
+          value={currentSkill}
+          onChange={handleTextareaChange}
+          onKeyDown={handleKeyDown}
+        ></textarea>
+      </section>
+
+      <section className="form education-info">
+        <h2>Education</h2>
+        <input type="text" placeholder="University/ College/ Other"></input>
+        <input type="number" placeholder="Start Date (Year)"></input>
+        <input type="number" placeholder="End Date (Year)"></input>
+        <input type="text" placeholder="Major"></input>
+      </section>
     </div>
   );
 }
 
-function Cv({ formData }) {
+function Cv({ formData, skills }) {
   return (
     <div className="cv-container">
       <button>Download PDF</button>
@@ -184,14 +233,9 @@ function Cv({ formData }) {
         <section className="skills">
           <h2>SKILLS</h2>
           <ul>
-            <li>HTML</li>
-            <li>Javascript</li>
-            <li>CSS</li>
-            <li>React</li>
-            <li>MongoDB</li>
-            <li>OOP</li>
-            <li>Node.js</li>
-            <li>Web Accessibility</li>
+            {skills.map((skill, index) => (
+              <li key={index}>{skill}</li>
+            ))}
           </ul>
         </section>
 
