@@ -14,14 +14,21 @@ export default function App() {
     twitter: "",
     university: "",
     major: "",
-    startDate: 0,
-    endDate: 0,
+    startDate: "",
+    endDate: "",
   });
 
   const [skills, setSkills] = useState([]);
   const [currentSkill, setCurrentSkill] = useState("");
 
-  const handleTextareaChange = (e) => {
+  const [workBulletPoints, setWorkBulletPoints] = useState([]);
+  const [currentBulletPoint, setCurrentBulletPoint] = useState("");
+
+  const handleWorkTextArea = (e) => {
+    setCurrentBulletPoint(e.target.value);
+  };
+
+  const handleSkillsTextArea = (e) => {
     setCurrentSkill(e.target.value);
   };
 
@@ -30,6 +37,14 @@ export default function App() {
       e.preventDefault();
       setSkills([...skills, currentSkill]);
       setCurrentSkill("");
+    }
+  };
+
+  const handleWorkKeyDown = (e) => {
+    if (e.key === "Enter" && currentBulletPoint.trim() !== "") {
+      e.preventDefault();
+      setWorkBulletPoints([...workBulletPoints, currentBulletPoint]);
+      setCurrentBulletPoint("");
     }
   };
 
@@ -48,9 +63,16 @@ export default function App() {
         handleData={handleData}
         currentSkill={currentSkill}
         handleKeyDown={handleKeyDown}
-        handleTextareaChange={handleTextareaChange}
+        handleSkillsTextArea={handleSkillsTextArea}
+        currentBulletPoint={currentBulletPoint}
+        handleWorkKeyDown={handleWorkKeyDown}
+        handleWorkTextArea={handleWorkTextArea}
       />
-      <Cv formData={formData} skills={skills} />
+      <Cv
+        formData={formData}
+        skills={skills}
+        workBulletPoints={workBulletPoints}
+      />
     </div>
   );
 }
@@ -59,8 +81,11 @@ function Form({
   formData,
   handleData,
   currentSkill,
-  handleTextareaChange,
+  handleSkillsTextArea,
   handleKeyDown,
+  currentBulletPoint,
+  handleWorkKeyDown,
+  handleWorkTextArea,
 }) {
   const [workExperience, setWorkExperience] = useState(false);
 
@@ -116,7 +141,13 @@ function Form({
               onChange={handleData}
               value={formData.workDuration}
             ></input>
-            <ul></ul>
+            <textarea
+              placeholder="Type a bullet point and hit enter"
+              id="work-textarea"
+              value={currentBulletPoint}
+              onChange={handleWorkTextArea}
+              onKeyDown={handleWorkKeyDown}
+            ></textarea>
           </div>
         )}
         <button id="experience-btn" onClick={handleExperienceBtn}>
@@ -168,23 +199,47 @@ function Form({
         <textarea
           placeholder="Type a skill and hit enter"
           value={currentSkill}
-          onChange={handleTextareaChange}
+          onChange={handleSkillsTextArea}
           onKeyDown={handleKeyDown}
         ></textarea>
       </section>
 
       <section className="form education-info">
         <h2>Education</h2>
-        <input type="text" placeholder="University/ College/ Other"></input>
-        <input type="number" placeholder="Start Date (Year)"></input>
-        <input type="number" placeholder="End Date (Year)"></input>
-        <input type="text" placeholder="Major"></input>
+        <input
+          type="text"
+          placeholder="University/ College/ Other"
+          name="university"
+          value={formData.university}
+          onChange={handleData}
+        ></input>
+        <input
+          type="number"
+          placeholder="Start Date (Year)"
+          name="startDate"
+          value={formData.startDate}
+          onChange={handleData}
+        ></input>
+        <input
+          type="number"
+          placeholder="End Date (Year)"
+          name="endDate"
+          value={formData.endDate}
+          onChange={handleData}
+        ></input>
+        <input
+          type="text"
+          placeholder="Major"
+          name="major"
+          value={formData.major}
+          onChange={handleData}
+        ></input>
       </section>
     </div>
   );
 }
 
-function Cv({ formData, skills }) {
+function Cv({ formData, skills, workBulletPoints }) {
   return (
     <div className="cv-container">
       <button>Download PDF</button>
@@ -201,9 +256,13 @@ function Cv({ formData, skills }) {
 
         <section className="work-experience">
           <h2>WORK EXPERIENCE</h2>
-          <span>{formData.techCorp}</span>
+          <span id="techCorp">{formData.techCorp}</span>
           <span id="duration">{formData.workDuration}</span>
-          <ul></ul>
+          <ul className="work-description">
+            {workBulletPoints.map((bulletpoint, index) => (
+              <li key={index}>{bulletpoint}</li>
+            ))}
+          </ul>
           <h3>Recent Projects</h3>
         </section>
 
@@ -241,11 +300,17 @@ function Cv({ formData, skills }) {
 
         <section className="education">
           <h2>EDUCATION</h2>
-          <span>Univerisy Of Ioannina</span>
-          <span> 2014-2024</span>
-          <span>Computer Science and Engineering</span>
+          <span id="university">{formData.university}</span>
+          <p id="uni-dates">
+            {formData.startDate} - {formData.endDate}
+          </p>
+          <span id="major">{formData.major}</span>
         </section>
       </div>
     </div>
   );
+}
+
+function test() {
+  return <div>delete!</div>;
 }
